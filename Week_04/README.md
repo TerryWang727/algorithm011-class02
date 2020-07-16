@@ -87,6 +87,9 @@ deque来表示，一开始队列为空，把开始节点加入到队列里面去
 前提 1.目标函数单调性（单调递增或递减）
      2.存在上下界(bounded)
      3.能够通过索引访问(index accessible)
+
+left + (right - left)/2 求中间值，它的优势在于不会超出当前数组最大值的范围，防止越界，而(right + left)/2 取到数组后两位时可能会出现越界的情况。
+
 二分查找代码模板
 # Python
 left, right = 0, len(array) - 1
@@ -100,4 +103,53 @@ while left <= right:
       else:
 	    right = mid - 1
 
+牛顿迭代法
+1.确定迭代变量，存在一个可直接或间接地不断由旧值递推出新值的变量，这个变量就是迭代变量
+2.建立迭代关系式
+3.对迭代过程进行控制，也就是算法实现
 
+
+使用二分查找，寻找一个半有序数组 [4, 5, 6, 7, 0, 1, 2] 中间无序的地方
+思路 二分查找 时间复杂度O(logn) 
+数组局部是有序的，从mid开始分开两部分[4,5,6]和[7,0,1,2]
+通过比较左右边界查看哪个数组有序，确定target在那边找
+while left <= right:
+      mid = (left + right) / 2
+      if array[mid] == target:
+            # find the target!!
+            break or return result
+      elif array[mid] < target:
+            left = mid + 1
+      else:
+            right = mid - 1
+
+牛顿迭代法
+1.确定迭代变量，存在一个可直接或间接地不断由旧值递推出新值的变量，这个变量就是迭
+代变量
+2.建立迭代关系式
+3.对迭代过程进行控制，也就是算法实现
+
+
+使用二分查找，寻找一个半有序数组 [4, 5, 6, 7, 0, 1, 2] 中间无序的地方
+思路 二分查找 时间复杂度O(logn)
+数组局部是有序的，从mid开始分开两部分[4,5,6]和[7,0,1,2]
+通过比较左右边界查看哪个数组有序，确定target在那边找
+
+所以分类讨论
+1.从左边界到mid
+如果[l, mid-1]是有序数组，且target的大小满足在[nums[left],nums[mid])，则我们应该将搜索范围缩小至[left, mid-1]，否则在 [mid+1, right]中寻找。
+2.从mid到右边界
+如果[mid, r]是有序数组，且target的大小满足(nums[mid+1],nums[r]]，则我们应该将搜索范围缩小至[mid+1, r]，否则在[l, mid-1]中寻找。
+
+cpp代码
+int searchTarget(vector<int>& nums, int target) {
+    int lo = 0, hi = int(nums.size()) - 1;
+    while (lo < hi) {
+        int mid = (lo + hi) / 2;
+        if ((nums[0] > target) ^ (nums[0] > nums[mid]) ^ (target > nums[mid]))
+            lo = mid + 1;
+        else
+            hi = mid;
+    }
+    return lo == hi && nums[lo] == target ? lo : -1;
+}

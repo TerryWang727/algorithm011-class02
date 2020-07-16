@@ -25,10 +25,18 @@
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
+//贪心 差值叠加->maxProfit
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
-
+        int ret = 0, max = 0;
+        for(int i = 1; i < prices.size(); i++)
+        {
+            ret += prices[i] - prices[i-1];
+            if(ret < 0) ret = 0;
+            if(ret > max) max = ret;
+        }
+        return max;
     }
 };
 //leetcode submit region end(Prohibit modification and deletion)

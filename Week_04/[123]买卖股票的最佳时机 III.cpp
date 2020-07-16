@@ -30,10 +30,50 @@
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
+
 class Solution {
 public:
-    int maxProfit(vector<int>& prices) {
 
+    int maxProfit(vector<int>& prices) {
+        if(prices.empty()) return 0;
+        int s1=-prices[0],s2=INT_MIN,s3=INT_MIN,s4=INT_MIN;
+
+        for(int i=1;i<prices.size();++i) {
+            s1 = max(s1, -prices[i]);
+            s2 = max(s2, s1+prices[i]);
+            s3 = max(s3, s2-prices[i]);
+            s4 = max(s4, s3+prices[i]);
+        }
+        return max(0,s4);
     }
+
 };
+
+//class Solution {
+//public:
+//    int maxProfit(vector<int>& prices) {
+//        int n = prices.size();
+//        if(n <= 1)
+//            return 0;
+//
+//        // 5个状态：0-4分别表示 未交易、买入一次、完成交易1次、买入2次、完成交易2次
+//        int dp[5];
+//
+//        // 初始化
+//        dp[0] = 0;
+//        dp[1] = -prices[0];
+//        dp[2] = INT_MIN;
+//        dp[3] = INT_MIN;
+//        dp[4] = INT_MIN;
+//        for(int i = 1; i < n; i++)
+//        {
+//            dp[0] = 0;
+//            dp[1] = max(dp[1], dp[0] - prices[i]);
+//            dp[2] = max(dp[2], dp[1] + prices[i]);
+//            dp[3] = max(dp[3], dp[2] - prices[i]);
+//            dp[4] = max(dp[4], dp[3] + prices[i]);
+//        }
+//        return max(dp[2], dp[4]);
+//    }
+//};
 //leetcode submit region end(Prohibit modification and deletion)
